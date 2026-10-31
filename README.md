@@ -107,7 +107,8 @@ first release, in the package settings: **Change visibility → Public**.
 Set in [Terminus](public/fonts/OFL-Terminus.txt) (SIL Open Font License 1.1).
 Theme colours are cyberspace.online's, as listed in
 [cyberspace-atmospheric-modulator](https://github.com/z0mbieparade/cyberspace-atmospheric-modulator).
-The favicon is the boot-screen monster from the firmware's
-`lib/core/src/ui/splash_layout.cpp`, redrawn as 16×16 pixels.
+Fluffy, the mascot, is the boot-screen monster from the firmware's
+`lib/core/src/ui/splash_layout.cpp`. The footer draws him as the device does
+(his art, speech bubble and words); the favicon redraws him as 16×16 pixels.
 
 Licensed under the GPL-3.0.

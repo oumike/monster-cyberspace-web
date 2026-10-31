@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { withBase } from '../basePath'
+import Fluffy from './Fluffy.jsx'
 
 const REPO = 'oumike/monster-cyberspace'
 
@@ -63,6 +64,7 @@ function BuyMeACoffee() {
 export default function Footer() {
   return (
     <footer className="footer">
+      <Fluffy />
       <div className="footer-row">
         <p className="footer-mark">Monster for Cyberspace, GPLv3</p>
         <p className="footer-links">

@@ -275,6 +275,16 @@ esp-web-install-button { display: inline-block; }
   padding: 1.25rem var(--gutter) 1.5rem;
 }
 .footer p { max-width: var(--page); margin: 0 auto 0.4rem; }
+.fluffy { max-width: var(--page); margin: 0 auto 1.5rem; }
+.fluffy-art {
+  font: inherit; font-size: var(--t-body); line-height: 1.1;
+  color: var(--fg); background: none; border: 0; padding: 0;
+  white-space: pre; text-align: left; cursor: pointer;
+}
+.fluffy-art:focus-visible { outline: 2px solid var(--edge); outline-offset: 4px; }
+.fluffy-row { display: block; min-height: 1.1em; }
+.fluffy-monster { color: var(--select); }
+.fluffy figcaption { margin-top: 0.75rem; color: var(--sys); }
 .footer-row {
   max-width: var(--page);
   margin: 0 auto 1rem;
