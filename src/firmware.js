@@ -26,15 +26,16 @@ export function releaseUrl(tag) {
 
 // release.sh writes one merged image flashed at 0x0, the same as the
 // monster-cyberspace Pages flasher (scripts/pages-site.sh). The part URL must
-// be absolute: esp-web-tools calls `new URL(path)` without a base.
-export function manifestDataUrl(board, tag) {
+// be absolute: esp-web-tools calls `new URL(path)` without a base. `extra` are
+// more parts, such as the mascot blob (a blob: URL, already absolute).
+export function manifestDataUrl(board, tag, extra = []) {
   const manifest = {
     name: `Monster for Cyberspace (${board.name})`,
     version: tag,
     new_install_prompt_erase: true,
     builds: [{
       chipFamily: board.chip,
-      parts: [{ path: `${window.location.origin}${firmwareUrl(board.slug, tag)}`, offset: 0 }],
+      parts: [{ path: `${window.location.origin}${firmwareUrl(board.slug, tag)}`, offset: 0 }, ...extra],
     }],
   }
   return `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(manifest))}`

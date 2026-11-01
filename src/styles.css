@@ -257,6 +257,34 @@ h1::after {
 .hints li::before { content: '\2022 '; color: var(--dim); }
 esp-web-install-button { display: inline-block; }
 
+/* Make your Fluffy and Phrases: Settings-screen dialogs over a dimmed page. */
+.mascot-buttons { margin-top: 1.5rem; }
+.modal {
+  color: var(--fg); background: var(--bg);
+  border: 2px solid var(--edge); border-radius: 0;
+  padding: 0 0 1.25rem;
+  max-width: min(64ch, 94vw); max-height: 94vh;
+}
+.modal::backdrop { background: rgba(0, 0, 0, 0.75); }
+.modal > :not(.bar) { margin-left: 2ch; margin-right: 2ch; }
+.modal .bar { margin-bottom: 1rem; }
+.modal textarea, .modal input {
+  font: inherit; color: var(--fg); background: var(--input);
+  border: 2px solid var(--dim); border-radius: 0; padding: 0.2em 0.5ch;
+}
+.modal textarea:focus, .modal input:focus { outline: none; border-color: var(--edge); }
+.mascot-split { display: flex; flex-wrap: wrap; gap: 1rem 3ch; align-items: flex-start; }
+.mascot-editor { width: calc(13ch + 1ch + 4px); resize: none; white-space: pre; overflow: hidden; line-height: 1.1; }
+.mascot-preview { margin: 0; font: inherit; line-height: 1.1; white-space: pre; }
+.mascot-preview-row { display: block; min-height: 1.1em; }
+.mascot-count { color: var(--sys); font-size: var(--t-small); margin: 0.3rem 0 0; }
+.mascot-error { color: var(--error); min-height: 1.4em; margin: 0.5rem 2ch; }
+.mascot-actions { justify-content: flex-end; margin-top: 1rem; }
+.mascot-phrases { margin-top: 0.5rem; padding-left: 3ch; }
+.mascot-phrases li { margin: 0.3rem 0; color: var(--sys); }
+.mascot-phrases input { width: calc(100% - 8ch); }
+.mascot-phrases .mascot-count { display: inline-block; width: 7ch; text-align: right; }
+
 /* Setup steps are a real sequence. */
 .steps { counter-reset: step; list-style: none; margin: 0 0 2rem; padding: 0; max-width: 68ch; }
 .steps li { counter-increment: step; position: relative; padding-left: 4ch; margin-bottom: 1rem; }

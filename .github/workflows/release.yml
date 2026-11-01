@@ -196,6 +196,7 @@ jobs:
         # broken src/firmware.js — before anything is committed.
         run: |
           npm ci
+          npm test
           npm run build
 
       - name: Commit the release locally

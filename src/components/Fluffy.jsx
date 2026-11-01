@@ -1,20 +1,12 @@
 import { useRef, useState } from 'react'
+import MASCOTS from '../mascots.json'
+import { ART_COLS } from '../mascot.mjs'
 
 // Fluffy as the firmware draws him on the boot splash and screensaver
-// (lib/core/src/ui/splash_layout.cpp: kArt, kMonsterWords, bubbleRows).
-const ART = [
-  ' /\\       /\\',
-  "/  '-----'  \\",
-  '|  (o) (o)  |',
-  '|   .VVV.   |',
-  " \\  '^^^'  /",
-  "  '-.___.-'",
-]
-const ART_W = 13
-const WORDS = [
-  'boo', 'moo', 'bop!', 'meow', 'hi!',
-  "We've been trying to reach you about your car's extended warranty.",
-]
+// (lib/core/src/ui/splash_layout.cpp: kArt, kMonsterWords, bubbleRows). His
+// art and words are the first preset and the default phrases in mascots.json.
+const ART = MASCOTS.presets[0].art
+const WORDS = MASCOTS.phrases
 const BUBBLE_TEXT = 18
 
 function wrap(text, width) {
@@ -37,6 +29,15 @@ function bubble(say) {
     ...lines.map((l, i) => (i === 0 ? '< ' : '| ') + l.padEnd(w) + ' |'),
     "'" + '-'.repeat(w + 2) + "'",
   ]
+}
+
+// The art beside a bubble with `say`, row by row, as the splash lays them out.
+export function splashRows(art, say) {
+  const bub = bubble(say)
+  return Array.from({ length: Math.max(art.length, bub.length) }, (_, i) => ({
+    monster: (art[i] || '').padEnd(ART_COLS),
+    bubble: bub[i] ? ' ' + bub[i] : '',
+  }))
 }
 
 // Each word once per round, never the same twice running, as MonsterWords does.
@@ -62,17 +63,16 @@ export default function Fluffy() {
     } else setPos(pos + 1)
   }
 
-  const bub = bubble(WORDS[word])
-  const rows = Math.max(ART.length, bub.length)
+  const rows = splashRows(ART, WORDS[word])
   return (
     <figure className="fluffy">
       <button type="button" className="fluffy-art" onClick={next}
         aria-label={`Fluffy says: ${WORDS[word]} Press for another word.`}>
         <span aria-hidden="true">
-          {Array.from({ length: rows }, (_, i) => (
+          {rows.map((r, i) => (
             <span className="fluffy-row" key={i}>
-              <span className="fluffy-monster">{(ART[i] || '').padEnd(ART_W)}</span>
-              {bub[i] ? ' ' + bub[i] : ''}
+              <span className="fluffy-monster">{r.monster}</span>
+              {r.bubble}
             </span>
           ))}
         </span>

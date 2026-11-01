@@ -45,9 +45,10 @@ permissions:
 # image still assembles. A local `npm run dev` never touches the Dockerfile or
 # nginx.conf, and `npm run build` cannot fail on either of them.
 #
-# There are no tests, no linter and no typecheck in this repo — that is a real
-# gap, not an oversight in this file. `npm run build` plus the image smoke test
-# below is the whole of what can be checked today.
+# The only unit tests are the mascot encoder's (`npm test`, against the
+# firmware repo's golden bytes). There is no linter and no typecheck — a real
+# gap, not an oversight in this file. Those tests, `npm run build` and the
+# image smoke test below are the whole of what can be checked today.
 
 jobs:
   build:
@@ -71,6 +72,9 @@ jobs:
 
       - name: Install
         run: npm ci
+
+      - name: Test
+        run: npm test
 
       - name: Build site
         run: npm run build

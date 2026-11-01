@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import 'esp-web-tools'
 import Bar from './Bar.jsx'
 import { BOARDS } from '../boards.js'
 import { versionsFor, manifestDataUrl, firmwareUrl, releaseUrl, FIRMWARE_VERSION } from '../firmware.js'
+import { MASCOT_OFFSET, blobMascot, encodeMascot, isDefault } from '../mascot.mjs'
+import { ArtDialog, PhrasesDialog, DEFAULTS, loadMascot, saveMascot, mascotStatus } from './Mascot.jsx'
 
 export default function Install({ catalog }) {
   const [slug, setSlug] = useState(BOARDS[0].slug)
@@ -20,10 +22,36 @@ export default function Install({ catalog }) {
     if (!versions.includes(version)) setVersion(versions[0] ?? null)
   }, [versions, version])
 
+  const [mascot, setMascot] = useState(loadMascot)
+  const [dialog, setDialog] = useState(null)
+  const artBtn = useRef(null)
+  const phrasesBtn = useRef(null)
+  const onDone = m => {
+    setMascot(m)
+    saveMascot(m)
+    setDialog(null)
+  }
+
+  // A changed mascot or phrases goes on as a second part, the blob at
+  // MASCOT_OFFSET; with the defaults, only the firmware is written.
+  const [blobUrl, setBlobUrl] = useState(null)
+  useEffect(() => {
+    if (isDefault(mascot, DEFAULTS)) {
+      setBlobUrl(null)
+      return
+    }
+    const bytes = encodeMascot(blobMascot(mascot, DEFAULTS))
+    const url = URL.createObjectURL(new Blob([bytes], { type: 'application/octet-stream' }))
+    setBlobUrl(url)
+    return () => URL.revokeObjectURL(url)
+  }, [mascot])
+
   const latest = catalog?.items?.find(r => !r.prerelease)?.tag ?? (failed ? FIRMWARE_VERSION : null)
   const manifest = useMemo(
-    () => (version ? manifestDataUrl(board, version) : null),
-    [board, version]
+    () => (version
+      ? manifestDataUrl(board, version, blobUrl ? [{ path: blobUrl, offset: MASCOT_OFFSET }] : [])
+      : null),
+    [board, version, blobUrl]
   )
 
   return (
@@ -71,6 +99,13 @@ export default function Install({ catalog }) {
           {version && <a className="btn" href={firmwareUrl(slug, version)} download>Download .bin</a>}
           {version && <a className="btn" href={releaseUrl(version)}>Release notes</a>}
         </div>
+        <div className="actions mascot-buttons">
+          <button type="button" className="btn" ref={artBtn} onClick={() => setDialog('art')}>Make your Fluffy</button>
+          <button type="button" className="btn" ref={phrasesBtn} onClick={() => setDialog('phrases')}>Phrases</button>
+        </div>
+        <p className="hint" aria-live="polite">{mascotStatus(mascot)}</p>
+        {dialog === 'art' && <ArtDialog mascot={mascot} opener={artBtn} onDone={onDone} />}
+        {dialog === 'phrases' && <PhrasesDialog mascot={mascot} opener={phrasesBtn} onDone={onDone} />}
         {failed && (
           <p className="hint">
             GitHub's release list didn't load, so only {FIRMWARE_VERSION} is offered.
@@ -78,6 +113,7 @@ export default function Install({ catalog }) {
         )}
         <ul className="hints">
           <li>The installer asks whether to erase. Erasing clears saved Wi-Fi, sign-in and settings; without it they're kept.</li>
+          <li>Your own mascot and phrases need firmware newer than v0.1.8; older firmware shows Fluffy and his words. Over-the-air updates keep them.</li>
           <li>After this, updates come over the air: Settings &rsaquo; Firmware on the device, or web config.</li>
           <li>From a terminal instead: <code>./flash.sh monster-cyberspace-{slug}-{version ?? '<tag>'}.bin /dev/ttyUSB0</code>, with <code>flash.sh</code> from the same release.</li>
         </ul>

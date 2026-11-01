@@ -11,6 +11,14 @@ status-bar section headings, a live 40×15 room, and all 17 firmware themes
 [esp-web-tools](https://esphome.github.io/esp-web-tools/) to write a release
 image over USB from the browser.
 
+By the flasher, **Make your Fluffy** draws or picks the boot-screen mascot
+(up to 13×6 plain ASCII characters) and **Phrases** sets up to ten things it
+says (80 characters each). The browser keeps both. When either differs from
+the default, Flash also writes a 4 KB mascot blob at `0xcb0000`, made by
+`src/mascot.mjs` (a copy of the firmware repo's `site/mascot.mjs`; presets in
+`src/mascots.json`). It needs firmware newer than v0.1.8; older firmware
+ignores it.
+
 Live at <https://monster.sumat.org/>.
 
 ## Develop
@@ -25,6 +33,7 @@ Then open <http://localhost:5173>.
 ## Build
 
 ```bash
+npm test            # mascot encoder against the firmware repo's golden bytes
 npm run build       # outputs static files to dist/
 npm run preview     # serves the built site on :4173
 ```
