@@ -1,5 +1,4 @@
 import Bar from './Bar.jsx'
-import { withBase } from '../basePath'
 import { BOARDS } from '../boards.js'
 import { versionsFor } from '../firmware.js'
 
@@ -21,7 +20,7 @@ export default function Boards({ catalog }) {
           {BOARDS.map(b => (
             <tr key={b.slug}>
               <td className="boards-photo">
-                {b.image ? <img src={withBase(`devices/${b.image}`)} alt="" loading="lazy" width="96" height="72" /> : <span className="no-photo" aria-hidden="true">?</span>}
+                {b.image ? <img src={b.image} alt="" loading="lazy" width="96" height="72" /> : <span className="no-photo" aria-hidden="true">?</span>}
               </td>
               <th scope="row">
                 {b.name}
