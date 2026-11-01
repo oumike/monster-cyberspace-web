@@ -2,8 +2,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import MASCOTS from '../mascots.json'
 import {
   ART_ROWS, ART_COLS, MAX_PHRASES, PHRASE_MAX,
-  blobMascot, cleanMascot, validateMascot,
+  cleanMascot, validateMascot,
 } from '../mascot.mjs'
+import { mascotStatus as statusLine } from '../mascotStatus.mjs'
 import { splashRows } from './Fluffy.jsx'
 
 // The flasher's "Make your Fluffy" and "Phrases" dialogs (spec §5 of
@@ -39,20 +40,13 @@ export function saveMascot(m) {
   try { localStorage.setItem(STORE_KEY, JSON.stringify(m)) } catch {}
 }
 
-// The line under Flash: what goes onto the board.
 export function mascotStatus(m) {
-  const b = blobMascot(m, DEFAULTS)
-  const n = b.phrases.length
-  const words = `${n} phrase${n === 1 ? '' : 's'}`
-  if (!b.art.length && !n) return 'Flashes with Fluffy and his phrases.'
-  if (!n) return "Flashes with your mascot and Fluffy's phrases."
-  if (!b.art.length) return `Flashes with Fluffy and your ${words}.`
-  return `Flashes with your mascot and ${words}.`
+  return statusLine(m, DEFAULTS)
 }
 
 // A modal <dialog>, shown on mount. Esc and a click outside its box close it;
 // every close goes through onClose, and focus goes back to `opener`.
-function Modal({ title, opener, onClose, children }) {
+function Modal({ title, count, opener, onClose, children }) {
   const ref = useRef(null)
   const close = useRef(onClose)
   close.current = onClose
@@ -81,7 +75,10 @@ function Modal({ title, opener, onClose, children }) {
 
   return (
     <dialog ref={ref} className="modal" aria-labelledby="modal-title">
-      <h3 id="modal-title" className="bar">{title}</h3>
+      <h3 id="modal-title" className="bar">
+        <span>{title}</span>
+        {count != null && <span className="bar-right" aria-live="polite">{count}</span>}
+      </h3>
       {children(() => ref.current.close())}
     </dialog>
   )
@@ -201,15 +198,13 @@ export function PhrasesDialog({ mascot, opener, onDone }) {
   }
 
   return (
-    <Modal title="Phrases" opener={opener} onClose={commit}>
+    <Modal title="Phrases" count={`${rows.filter(r => r !== '').length}/${MAX_PHRASES}`}
+      opener={opener} onClose={commit}>
       {close => (
         <>
           <p className="hint">
-            What the monster says in its bubble: up to {MAX_PHRASES}, {PHRASE_MAX} plain
-            ASCII characters each. Blank rows are skipped.
-          </p>
-          <p className="mascot-count" aria-live="polite">
-            {rows.filter(r => r !== '').length}/{MAX_PHRASES} phrases
+            What the monster says in its bubble. All {MAX_PHRASES} slots are
+            yours, {PHRASE_MAX} plain ASCII characters each; blank ones are skipped.
           </p>
           <ol className="mascot-phrases">
             {rows.map((r, i) => (

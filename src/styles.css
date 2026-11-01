@@ -267,7 +267,8 @@ esp-web-install-button { display: inline-block; }
 }
 .modal::backdrop { background: rgba(0, 0, 0, 0.75); }
 .modal > :not(.bar) { margin-left: 2ch; margin-right: 2ch; }
-.modal .bar { margin-bottom: 1rem; }
+.modal .bar { margin-bottom: 0.75rem; }
+.modal .hint { margin-top: 0; margin-bottom: 0.5rem; }
 .modal textarea, .modal input {
   font: inherit; color: var(--fg); background: var(--input);
   border: 2px solid var(--dim); border-radius: 0; padding: 0.2em 0.5ch;
@@ -279,9 +280,10 @@ esp-web-install-button { display: inline-block; }
 .mascot-preview-row { display: block; min-height: 1.1em; }
 .mascot-count { color: var(--sys); font-size: var(--t-small); margin: 0.3rem 0 0; }
 .mascot-error { color: var(--error); min-height: 1.4em; margin: 0.5rem 2ch; }
-.mascot-actions { justify-content: flex-end; margin-top: 1rem; }
+.mascot-actions { justify-content: flex-end; margin-top: 0.75rem; }
 .mascot-phrases { margin-top: 0.5rem; padding-left: 3ch; }
-.mascot-phrases li { margin: 0.3rem 0; color: var(--sys); }
+.mascot-phrases li { margin: 0.15rem 0; color: var(--sys); }
+.mascot-phrases input { padding-block: 0.05em; }
 .mascot-phrases input { width: calc(100% - 8ch); }
 .mascot-phrases .mascot-count { display: inline-block; width: 7ch; text-align: right; }
 

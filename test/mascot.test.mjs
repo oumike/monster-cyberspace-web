@@ -62,3 +62,15 @@ test("a part equal to the default is stored empty", () => {
   assert.deepEqual(blobMascot({ art: ["(o o)  "], phrases: defaults.phrases }, defaults),
     { art: ["(o o)"], phrases: [] });
 });
+
+test("status counts what the blob holds", async () => {
+  const { mascotStatus } = await import("../src/mascotStatus.mjs");
+  const ten = [...defaults.phrases, "a", "b", "c", "d"];
+  for (const phrases of [ten, [...defaults.phrases, "", "x"], ["only one"]]) {
+    const m = { art: defaults.art, phrases };
+    const n = encodeMascot(blobMascot(m, defaults))[6];
+    assert.match(mascotStatus(m, defaults), new RegExp(`your ${n} phrases?\\.$`));
+  }
+  assert.equal(encodeMascot(blobMascot({ art: defaults.art, phrases: ten }, defaults))[6], 10);
+  assert.equal(mascotStatus(defaults, defaults), "Flashes with Fluffy and his phrases.");
+});
