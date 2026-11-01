@@ -84,7 +84,7 @@ export default function Install({ catalog }) {
             </select>
           </label>
         </div>
-        <div className="actions">
+        <div className="actions flash-row">
           {manifest ? (
             <esp-web-install-button key={`${slug}-${version}`} manifest={manifest}>
               <button slot="activate" className="btn btn-select">Flash {version}</button>
@@ -96,14 +96,16 @@ export default function Install({ catalog }) {
               {catalog ? 'No release for this board yet' : 'Loading releases…'}
             </button>
           )}
-          {version && <a className="btn" href={firmwareUrl(slug, version)} download>Download .bin</a>}
-          {version && <a className="btn" href={releaseUrl(version)}>Release notes</a>}
-        </div>
-        <div className="actions mascot-buttons">
           <button type="button" className="btn" ref={artBtn} onClick={() => setDialog('art')}>Make your Fluffy</button>
           <button type="button" className="btn" ref={phrasesBtn} onClick={() => setDialog('phrases')}>Phrases</button>
         </div>
-        <p className="hint" aria-live="polite">{mascotStatus(mascot)}</p>
+        <p className="hint mascot-status" aria-live="polite">{mascotStatus(mascot)}</p>
+        {version && (
+          <div className="actions">
+            <a className="btn" href={firmwareUrl(slug, version)} download>Download .bin</a>
+            <a className="btn" href={releaseUrl(version)}>Release notes</a>
+          </div>
+        )}
         {dialog === 'art' && <ArtDialog mascot={mascot} opener={artBtn} onDone={onDone} />}
         {dialog === 'phrases' && <PhrasesDialog mascot={mascot} opener={phrasesBtn} onDone={onDone} />}
         {failed && (

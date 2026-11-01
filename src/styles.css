@@ -129,7 +129,7 @@ h1::after {
 
 .lede { font-size: var(--t-lede); line-height: 1.35; max-width: 40ch; margin: 0 0 2rem; }
 
-.actions { display: flex; flex-wrap: wrap; gap: 1.5ch; align-items: center; }
+.actions { display: flex; flex-wrap: wrap; gap: 1rem 1.5ch; align-items: center; }
 
 /* Buttons are Home tiles: a dim outline, or the selection's solid block. */
 .btn {
@@ -258,7 +258,7 @@ h1::after {
 esp-web-install-button { display: inline-block; }
 
 /* Make your Fluffy and Phrases: Settings-screen dialogs over a dimmed page. */
-.mascot-buttons { margin-top: 1.5rem; }
+.mascot-status { margin: 0.8rem 0 1.5rem; max-width: 68ch; }
 .modal {
   color: var(--fg); background: var(--bg);
   border: 2px solid var(--edge); border-radius: 0;
@@ -343,6 +343,12 @@ esp-web-install-button { display: inline-block; }
   .boards th, .boards td { border: 0; padding: 0; }
   .boards-photo { grid-row: span 3; }
   .field { grid-template-columns: 1fr; gap: 0.3rem; }
+  /* Flash on a row of its own, the two mascot buttons halving the next. */
+  .flash-row { align-items: stretch; }
+  .flash-row > * { flex: 1 1 0; }
+  .flash-row > .btn { padding-inline: 1ch; }
+  .flash-row > :first-child { flex-basis: 100%; }
+  .flash-row esp-web-install-button .btn, .flash-row > .btn { width: 100%; }
   .docs div { grid-template-columns: 1fr; gap: 0; }
 }
 
