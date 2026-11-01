@@ -26,6 +26,7 @@ export default function Boards({ catalog }) {
               <th scope="row">
                 {b.name}
                 {!released(b.slug) && <span className="pending"> not released yet</span>}
+                {b.note && <span className="hint board-note">{b.note}</span>}
               </th>
               <td>{b.input}</td>
               <td>{b.screen}</td>

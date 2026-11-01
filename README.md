@@ -17,7 +17,8 @@ says (80 characters each). The browser keeps both. When either differs from
 the default, Flash also writes a 4 KB mascot blob at `0xcb0000`, made by
 `src/mascot.mjs` (a copy of the firmware repo's `site/mascot.mjs`; presets in
 `src/mascots.json`). It needs firmware newer than v0.1.8; older firmware
-ignores it.
+ignores it. Boards built without the mascot partition (`NO_MASCOT_BOARDS`
+in `src/mascot.mjs`: the Cardputer ADV) hide both buttons.
 
 Live at <https://monster.sumat.org/>.
 

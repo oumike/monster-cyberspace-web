@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 import {
-  crc32, cleanMascot, validateMascot, encodeMascot, isDefault, blobMascot,
+  crc32, cleanMascot, validateMascot, encodeMascot, isDefault, blobMascot, hasMascot,
 } from "../src/mascot.mjs";
 
 const golden = readFileSync(new URL("./fixtures/mascot_golden.h", import.meta.url), "utf8");
@@ -73,4 +73,9 @@ test("status counts what the blob holds", async () => {
   }
   assert.equal(encodeMascot(blobMascot({ art: defaults.art, phrases: ten }, defaults))[6], 10);
   assert.equal(mascotStatus(defaults, defaults), "Flashes with Fluffy and his phrases.");
+});
+
+test("boards without a mascot partition", () => {
+  assert.equal(hasMascot("cardputer-adv"), false);
+  assert.equal(hasMascot("m9"), true);
 });

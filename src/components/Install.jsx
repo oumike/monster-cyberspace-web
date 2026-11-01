@@ -3,7 +3,7 @@ import 'esp-web-tools'
 import Bar from './Bar.jsx'
 import { BOARDS } from '../boards.js'
 import { versionsFor, manifestDataUrl, firmwareUrl, releaseUrl, FIRMWARE_VERSION } from '../firmware.js'
-import { MASCOT_OFFSET, blobMascot, encodeMascot, isDefault } from '../mascot.mjs'
+import { MASCOT_OFFSET, blobMascot, encodeMascot, hasMascot, isDefault } from '../mascot.mjs'
 import { ArtDialog, PhrasesDialog, DEFAULTS, loadMascot, saveMascot, mascotStatus } from './Mascot.jsx'
 
 export default function Install({ catalog }) {
@@ -13,6 +13,8 @@ export default function Install({ catalog }) {
   useEffect(() => setSerial('serial' in navigator), [])
 
   const board = BOARDS.find(b => b.slug === slug) ?? BOARDS[0]
+  const mascotOk = hasMascot(slug)
+  const ota = board.ota !== false
   const failed = !!catalog?.failed
   const versions = useMemo(
     () => (catalog ? versionsFor(catalog.items, slug, failed) : []),
@@ -49,9 +51,9 @@ export default function Install({ catalog }) {
   const latest = catalog?.items?.find(r => !r.prerelease)?.tag ?? (failed ? FIRMWARE_VERSION : null)
   const manifest = useMemo(
     () => (version
-      ? manifestDataUrl(board, version, blobUrl ? [{ path: blobUrl, offset: MASCOT_OFFSET }] : [])
+      ? manifestDataUrl(board, version, blobUrl && mascotOk ? [{ path: blobUrl, offset: MASCOT_OFFSET }] : [])
       : null),
-    [board, version, blobUrl]
+    [board, version, blobUrl, mascotOk]
   )
 
   return (
@@ -96,18 +98,24 @@ export default function Install({ catalog }) {
               {catalog ? 'No release for this board yet' : 'Loading releases…'}
             </button>
           )}
-          <button type="button" className="btn" ref={artBtn} onClick={() => setDialog('art')}>Make your Fluffy</button>
-          <button type="button" className="btn" ref={phrasesBtn} onClick={() => setDialog('phrases')}>Phrases</button>
+          {mascotOk && (
+            <>
+              <button type="button" className="btn" ref={artBtn} onClick={() => setDialog('art')}>Make your Fluffy</button>
+              <button type="button" className="btn" ref={phrasesBtn} onClick={() => setDialog('phrases')}>Phrases</button>
+            </>
+          )}
         </div>
-        <p className="hint mascot-status" aria-live="polite">{mascotStatus(mascot)}</p>
+        <p className="hint mascot-status" aria-live="polite">
+          {mascotOk ? mascotStatus(mascot) : `${board.name} always shows Fluffy and his words.`}
+        </p>
         {version && (
           <div className="actions">
             <a className="btn" href={firmwareUrl(slug, version)} download>Download .bin</a>
             <a className="btn" href={releaseUrl(version)}>Release notes</a>
           </div>
         )}
-        {dialog === 'art' && <ArtDialog mascot={mascot} opener={artBtn} onDone={onDone} />}
-        {dialog === 'phrases' && <PhrasesDialog mascot={mascot} opener={phrasesBtn} onDone={onDone} />}
+        {mascotOk && dialog === 'art' && <ArtDialog mascot={mascot} opener={artBtn} onDone={onDone} />}
+        {mascotOk && dialog === 'phrases' && <PhrasesDialog mascot={mascot} opener={phrasesBtn} onDone={onDone} />}
         {failed && (
           <p className="hint">
             GitHub's release list didn't load, so only {FIRMWARE_VERSION} is offered.
@@ -116,7 +124,9 @@ export default function Install({ catalog }) {
         <ul className="hints">
           <li>The installer asks whether to erase. Erasing clears saved Wi-Fi, sign-in and settings; without it they're kept.</li>
           <li>Your own mascot and phrases need firmware newer than v0.1.8; older firmware shows Fluffy and his words. Over-the-air updates keep them.</li>
-          <li>After this, updates come over the air: Settings &rsaquo; Firmware on the device, or web config.</li>
+          {ota
+            ? <li>After this, updates come over the air: Settings &rsaquo; Firmware on the device, or web config.</li>
+            : <li>{board.name} has no over-the-air updates: flash a new release from this page; without erasing, settings are kept.</li>}
           <li>From a terminal instead: <code>./flash.sh monster-cyberspace-{slug}-{version ?? '<tag>'}.bin /dev/ttyUSB0</code>, with <code>flash.sh</code> from the same release.</li>
         </ul>
       </div>

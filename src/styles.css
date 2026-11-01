@@ -245,6 +245,7 @@ h1::after {
 }
 .no-photo { display: grid; place-items: center; background: var(--panel); color: var(--dim); }
 .pending { color: var(--sys); font-size: var(--t-small); }
+.board-note { display: block; font-weight: normal; font-size: var(--t-small); }
 
 /* Install: label and value columns, like the Settings screen. */
 .fields { display: grid; gap: 0.8rem; margin-bottom: 1.8rem; max-width: 62ch; }
