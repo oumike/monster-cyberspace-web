@@ -7,7 +7,7 @@ import { withBase } from './basePath'
 export const BOARDS = [
   { slug: 'm9', name: 'Elecrow ThinkNode M9', input: 'Keyboard and d-pad', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'm9.jpg' },
   { slug: 'mesh-deck', name: 'Attaky Mesh Deck', input: 'Keyboard, d-pad and touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'mesh-deck.jpg' },
-  { slug: 'cyber-deck-plus', name: 'Attaky Cyber Deck Plus', input: 'Keyboard, d-pad, gamepad and touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'no-photo.svg' },
+  { slug: 'cyber-deck-plus', name: 'Attaky Cyber Deck Plus', input: 'Keyboard, d-pad, gamepad and touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'cyber-deck-plus.jpg' },
   { slug: 'tdeck', name: 'LilyGO T-Deck Plus', input: 'Keyboard, trackball and touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'tdeck.png' },
   { slug: 'tdeck-pro', name: 'LilyGO T-Deck Pro', input: 'Keyboard and touch', screen: 'E-paper', chip: 'ESP32-S3', image: 'tdeck-pro.jpg' },
   { slug: 'pager', name: 'LilyGO T-LoRa Pager', input: 'Keyboard and side wheel', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'tlora-pager-tft.png' },
