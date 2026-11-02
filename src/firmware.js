@@ -3,7 +3,7 @@ import { withBase } from './basePath'
 // FIRMWARE_VERSION is only the fallback for when the GitHub API call fails
 // (rate limit, offline); the version list is fetched at page load by
 // releaseCatalog(). The release workflow syncs this line, so keep its shape.
-export const FIRMWARE_VERSION = 'v1.0.0'
+export const FIRMWARE_VERSION = 'v1.0.1'
 export const REPO = 'oumike/monster-cyberspace'
 
 // Same-origin proxy path. Vite (dev) and nginx (prod) forward
