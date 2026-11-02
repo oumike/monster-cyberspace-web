@@ -15,5 +15,5 @@ export const BOARDS = [
   { slug: 'crowpanel35', name: 'Elecrow CrowPanel Advance 3.5"', input: 'Touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'crowpanel-35.jpg' },
   { slug: 'crowpanel50', name: 'Elecrow CrowPanel Advance 5.0"', input: 'Touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'crowpanel-50.jpg' },
   { slug: 'cardputer-adv', name: 'M5Stack Cardputer ADV', input: 'Keyboard', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'cardputer-adv.png', ota: false, note: 'No Guilds, spell check, emoji tray, over-the-air updates or custom mascot' },
-  { slug: 'x4', name: 'Xteink X4', input: 'Six buttons', screen: 'E-paper', chip: 'ESP32-C3', image: 'no-photo.svg' },
+  { slug: 'x4', name: 'Xteink X4', input: 'Six buttons', screen: 'E-paper', chip: 'ESP32-C3', image: 'x4.jpg' },
 ].map(b => ({ ...b, image: b.image && withBase(`/devices/${b.image}`) }))
