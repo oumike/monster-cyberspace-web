@@ -14,6 +14,7 @@ export const BOARDS = [
   { slug: 'wio-l2', name: 'Seeed Wio Tracker L2', input: 'Touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'wio-tracker-l2.jpg' },
   { slug: 'crowpanel35', name: 'Elecrow CrowPanel Advance 3.5"', input: 'Touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'crowpanel-35.jpg' },
   { slug: 'crowpanel50', name: 'Elecrow CrowPanel Advance 5.0"', input: 'Touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'crowpanel-50.jpg' },
+  { slug: 'tdisplay-p4', name: 'LilyGO T-Display P4', input: 'Touch and optional keyboard', screen: 'Colour AMOLED', chip: 'ESP32-P4', image: 'tdisplay-p4.png' },
   { slug: 'cardputer-adv', name: 'M5Stack Cardputer ADV', input: 'Keyboard', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'cardputer-adv.png', ota: false, note: 'No Guilds, spell check, emoji tray, over-the-air updates or custom mascot' },
   { slug: 'x4', name: 'Xteink X4', input: 'Six buttons', screen: 'E-paper', chip: 'ESP32-C3', image: 'x4.jpg' },
 ].map(b => ({ ...b, image: b.image && withBase(`/devices/${b.image}`) }))
