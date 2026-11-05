@@ -1,7 +1,8 @@
 import { withBase } from './basePath'
 
 // One entry per release image. `slug` is the image's name in the release
-// (board::otaSlug() in each HAL). Device photos are camillia-mt-web's;
+// (board::otaSlug() in each HAL). Device photos are camillia-mt-web's (the
+// Tanmatsu's is Nicolai Electronics' shop photo);
 // no-photo.svg (its stand-in artwork) marks a board with no photo yet.
 // `note`: what a board's build leaves out; `ota: false`: no over-the-air updates.
 export const BOARDS = [
@@ -15,5 +16,6 @@ export const BOARDS = [
   { slug: 'crowpanel35', name: 'Elecrow CrowPanel Advance 3.5"', input: 'Touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'crowpanel-35.jpg' },
   { slug: 'crowpanel50', name: 'Elecrow CrowPanel Advance 5.0"', input: 'Touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'crowpanel-50.jpg' },
   { slug: 'tdisplay-p4', name: 'LilyGO T-Display P4', input: 'Touch and optional keyboard', screen: 'Colour AMOLED', chip: 'ESP32-P4', image: 'tdisplay-p4.png' },
+  { slug: 'tanmatsu', name: 'Nicolai Electronics Tanmatsu', input: 'Keyboard', screen: 'Colour LCD', chip: 'ESP32-P4', image: 'tanmatsu.jpg' },
   { slug: 'cardputer-adv', name: 'M5Stack Cardputer ADV', input: 'Keyboard', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'cardputer-adv.png', ota: false, note: 'No Guilds, spell check, emoji tray, over-the-air updates or custom mascot' },
 ].map(b => ({ ...b, image: b.image && withBase(`/devices/${b.image}`) }))
