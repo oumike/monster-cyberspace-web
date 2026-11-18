@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import 'esp-web-tools'
 import Bar from './Bar.jsx'
 import { BOARDS } from '../boards.js'
-import { versionsFor, manifestDataUrl, firmwareUrl, releaseUrl, FIRMWARE_VERSION } from '../firmware.js'
+import { versionsFor, manifestDataUrl, firmwareUrl, assetName, releaseUrl, FIRMWARE_VERSION } from '../firmware.js'
 import { MASCOT_OFFSET, blobMascot, encodeMascot, hasMascot, isDefault } from '../mascot.mjs'
 import { ArtDialog, PhrasesDialog, DEFAULTS, loadMascot, saveMascot, mascotStatus } from './Mascot.jsx'
 
@@ -13,7 +13,9 @@ export default function Install({ catalog }) {
   useEffect(() => setSerial('serial' in navigator), [])
 
   const board = BOARDS.find(b => b.slug === slug) ?? BOARDS[0]
-  const mascotOk = hasMascot(slug)
+  const linux = !!board.linux
+  // Linux boards set their mascot in web config, not from a flashed blob.
+  const mascotOk = !linux && hasMascot(slug)
   const ota = board.ota !== false
   const failed = !!catalog?.failed
   const versions = useMemo(
@@ -63,7 +65,7 @@ export default function Install({ catalog }) {
         Plug the board in over USB, pick it here and press Flash. This page
         writes the image straight to it from Chrome or Edge on a desktop.
       </p>
-      {!serial && (
+      {!serial && !linux && (
         <p className="notice">
           This browser can't talk to USB serial ports. Open the page in Chrome
           or Edge on a desktop, or download the image and flash it
@@ -87,7 +89,13 @@ export default function Install({ catalog }) {
           </label>
         </div>
         <div className="actions flash-row">
-          {manifest ? (
+          {linux ? (
+            version
+              ? <a className="btn btn-select" href={firmwareUrl(slug, version)} download>Download {version} .deb</a>
+              : <button type="button" className="btn btn-select" disabled>
+                  {catalog ? 'No release for this board yet' : 'Loading releases…'}
+                </button>
+          ) : manifest ? (
             <esp-web-install-button key={`${slug}-${version}`} manifest={manifest}>
               <button slot="activate" className="btn btn-select">Flash {version}</button>
               <span slot="unsupported" className="notice">Flashing needs Chrome or Edge on a desktop.</span>
@@ -106,11 +114,13 @@ export default function Install({ catalog }) {
           )}
         </div>
         <p className="hint mascot-status" aria-live="polite">
-          {mascotOk ? mascotStatus(mascot) : `${board.name} always shows Fluffy and his words.`}
+          {linux
+            ? `${board.name} runs Linux, so it isn't flashed: install the .deb on it.`
+            : mascotOk ? mascotStatus(mascot) : `${board.name} always shows Fluffy and his words.`}
         </p>
         {version && (
           <div className="actions">
-            <a className="btn" href={firmwareUrl(slug, version)} download>Download .bin</a>
+            {!linux && <a className="btn" href={firmwareUrl(slug, version)} download>Download .bin</a>}
             <a className="btn" href={releaseUrl(version)}>Release notes</a>
           </div>
         )}
@@ -121,6 +131,13 @@ export default function Install({ catalog }) {
             GitHub's release list didn't load, so only {FIRMWARE_VERSION} is offered.
           </p>
         )}
+        {linux ? (
+          <ul className="hints">
+            <li>Copy the .deb to the device (over SSH, with <code>scp</code> for example) and install it there: <code>sudo apt install ./{assetName(slug, version ?? '<tag>')}</code>. It shows up in the launcher.</li>
+            <li>No over-the-air updates: install a newer .deb the same way; settings are kept.</li>
+            <li>Your own mascot and phrases are set in web config's Mascot section (Settings &rsaquo; Web config page).</li>
+          </ul>
+        ) : (
         <ul className="hints">
           <li>The installer asks whether to erase. Erasing clears saved Wi-Fi, sign-in and settings; without it they're kept.</li>
           <li>Your own mascot and phrases need firmware newer than v0.1.8; older firmware shows Fluffy and his words. Over-the-air updates keep them.</li>
@@ -129,6 +146,7 @@ export default function Install({ catalog }) {
             : <li>{board.name} has no over-the-air updates: flash a new release from this page; without erasing, settings are kept.</li>}
           <li>From a terminal instead: <code>./flash.sh monster-cyberspace-{slug}-{version ?? '<tag>'}.bin /dev/ttyUSB0</code>, with <code>flash.sh</code> from the same release.</li>
         </ul>
+        )}
       </div>
     </section>
   )

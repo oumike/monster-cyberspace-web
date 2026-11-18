@@ -2,9 +2,11 @@ import { withBase } from './basePath'
 
 // One entry per release image. `slug` is the image's name in the release
 // (board::otaSlug() in each HAL). Device photos are camillia-mt-web's (the
-// Tanmatsu's is Nicolai Electronics' shop photo);
+// Tanmatsu's is Nicolai Electronics' shop photo, the Tab5's and the
+// CardputerZero's M5Stack's);
 // no-photo.svg (its stand-in artwork) marks a board with no photo yet.
-// `note`: what a board's build leaves out; `ota: false`: no over-the-air updates.
+// `note`: what a board's build leaves out; `ota: false`: no over-the-air updates;
+// `linux: true`: a Linux board whose release asset is an arm64 .deb, not flashed.
 export const BOARDS = [
   { slug: 'm9', name: 'Elecrow ThinkNode M9', input: 'Keyboard and d-pad', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'm9.jpg' },
   { slug: 'mesh-deck', name: 'Attaky Mesh Deck', input: 'Keyboard, d-pad and touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'mesh-deck.jpg' },
@@ -17,5 +19,7 @@ export const BOARDS = [
   { slug: 'crowpanel50', name: 'Elecrow CrowPanel Advance 5.0"', input: 'Touch', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'crowpanel-50.jpg' },
   { slug: 'tdisplay-p4', name: 'LilyGO T-Display P4', input: 'Touch and optional keyboard', screen: 'Colour AMOLED', chip: 'ESP32-P4', image: 'tdisplay-p4.png' },
   { slug: 'tanmatsu', name: 'Nicolai Electronics Tanmatsu', input: 'Keyboard', screen: 'Colour LCD', chip: 'ESP32-P4', image: 'tanmatsu.jpg' },
+  { slug: 'tab5', name: 'M5Stack Tab5', input: 'Touch and optional keyboard', screen: 'Colour LCD', chip: 'ESP32-P4', image: 'tab5.jpg' },
   { slug: 'cardputer-adv', name: 'M5Stack Cardputer ADV', input: 'Keyboard', screen: 'Colour LCD', chip: 'ESP32-S3', image: 'cardputer-adv.png', ota: false, note: 'No Guilds, spell check, emoji tray, over-the-air updates or custom mascot' },
+  { slug: 'cardputer-zero', name: 'M5Stack CardputerZero', input: 'Keyboard', screen: 'Colour LCD', chip: 'Linux', image: 'cardputer-zero.png', linux: true, ota: false, note: 'Runs Linux: an app for its launcher, installed from a .deb' },
 ].map(b => ({ ...b, image: b.image && withBase(`/devices/${b.image}`) }))

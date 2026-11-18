@@ -20,6 +20,11 @@ the default, Flash also writes a 4 KB mascot blob at `0xcb0000`, made by
 ignores it. Boards built without the mascot partition (`NO_MASCOT_BOARDS`
 in `src/mascot.mjs`: the Cardputer ADV) hide both buttons.
 
+Linux boards (`linux: true` in `src/boards.js`: the M5Stack CardputerZero)
+aren't flashed: their release asset is `monster-cyberspace-<slug>-<tag>_arm64.deb`,
+which the page offers as a download with the `apt install` step, and their
+mascot is set in web config.
+
 Live at <https://monster.sumat.org/>.
 
 ## Develop

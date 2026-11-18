@@ -1,4 +1,5 @@
 import { withBase } from './basePath'
+import { BOARDS } from './boards.js'
 
 // FIRMWARE_VERSION is only the fallback for when the GitHub API call fails
 // (rate limit, offline); the version list is fetched at page load by
@@ -11,9 +12,16 @@ export const REPO = 'oumike/monster-cyberspace'
 // adding the CORS header esp-web-tools' fetch() needs.
 export const PROXY_BASE = withBase('/firmware')
 
-// scripts/release.sh's env_out_name slug, as in monster-cyberspace-<slug>-<tag>.bin.
+export function isLinux(slug) {
+  return !!BOARDS.find(b => b.slug === slug)?.linux
+}
+
+// scripts/release.sh's env_out_name slug, as in monster-cyberspace-<slug>-<tag>.bin,
+// or monster-cyberspace-<slug>-<tag>_arm64.deb for its LINUX_TARGETS.
 export function assetName(slug, tag) {
-  return `monster-cyberspace-${slug}-${tag}.bin`
+  return isLinux(slug)
+    ? `monster-cyberspace-${slug}-${tag}_arm64.deb`
+    : `monster-cyberspace-${slug}-${tag}.bin`
 }
 
 export function firmwareUrl(slug, tag) {
